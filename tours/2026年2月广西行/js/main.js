@@ -13,6 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
     initScrollAnimations();
     initPhotoWall();
     initMap(); // 添加地图初始化
+    initTimelineClick(); // 初始化时间线点击事件
 });
 
 // ==================== 导航栏功能 ====================
@@ -1014,4 +1015,34 @@ function initMap() {
     }));
 
     console.log('地图初始化完成 - 2026年2月广西行，共标记', mapMarkers.length, '个景点');
+}
+
+// ==================== 时间线点击事件 ====================
+function initTimelineClick() {
+    const timelineItems = document.querySelectorAll('.timeline-day-item');
+
+    timelineItems.forEach(item => {
+        item.addEventListener('click', function() {
+            const targetId = this.getAttribute('data-target');
+            const targetSection = document.getElementById(targetId);
+
+            if (targetSection) {
+                const navHeight = document.getElementById('navbar').offsetHeight;
+                const targetPosition = targetSection.offsetTop - navHeight;
+
+                // 平滑滚动到目标位置
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+
+                // 添加高亮效果
+                targetSection.style.transition = 'background-color 0.3s ease';
+                targetSection.style.backgroundColor = '#FFF0F3';
+                setTimeout(() => {
+                    targetSection.style.backgroundColor = '';
+                }, 1000);
+            }
+        });
+    });
 }
